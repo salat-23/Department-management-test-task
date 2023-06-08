@@ -1,13 +1,13 @@
-package org.logiclettuce.depman.api.admin.department
+package org.logiclettuce.depman.api.department
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.logiclettuce.depman.api.admin.department.dto.CreateDepartmentRequest
-import org.logiclettuce.depman.api.admin.department.dto.DepartmentGenericResponse
-import org.logiclettuce.depman.api.admin.department.dto.EditDepartmentRequest
+import org.logiclettuce.depman.api.department.dto.CreateDepartmentRequest
+import org.logiclettuce.depman.api.department.dto.DepartmentGenericResponse
+import org.logiclettuce.depman.api.department.dto.EditDepartmentRequest
 import org.logiclettuce.depman.api.common.dto.UserGenericResponse
 import org.logiclettuce.depman.error.dto.ApiError
 import org.logiclettuce.depman.service.department.AlreadyAssignedAsHeadException
@@ -85,6 +85,7 @@ class DepartmentController(
         )
     )
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     fun editDepartment(
         @PathVariable id: Long,
         @RequestBody editDepartmentRequest: EditDepartmentRequest

@@ -1,6 +1,6 @@
 package org.logiclettuce.depman.service.employee
 
-import org.logiclettuce.depman.api.admin.employee.dto.*
+import org.logiclettuce.depman.api.employee.dto.*
 import org.logiclettuce.depman.common.domain.department.Department
 import org.logiclettuce.depman.common.domain.employee.Employee
 import org.logiclettuce.depman.common.domain.employee.EmployeeDao

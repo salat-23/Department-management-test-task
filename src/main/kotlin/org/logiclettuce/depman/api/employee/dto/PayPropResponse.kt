@@ -1,4 +1,4 @@
-package org.logiclettuce.depman.api.admin.employee.dto
+package org.logiclettuce.depman.api.employee.dto
 
 import org.logiclettuce.depman.common.domain.payprop.PayMethod
 import org.logiclettuce.depman.common.domain.payprop.PayProp

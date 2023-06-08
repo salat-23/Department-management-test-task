@@ -1,4 +1,4 @@
-package org.logiclettuce.depman.api.admin.department.dto
+package org.logiclettuce.depman.api.department.dto
 
 import org.logiclettuce.depman.api.common.dto.UserGenericResponse
 import org.logiclettuce.depman.common.domain.department.Department

@@ -1,7 +1,7 @@
 package org.logiclettuce.depman.service.department
 
-import org.logiclettuce.depman.api.admin.department.dto.DepartmentGenericResponse
-import org.logiclettuce.depman.api.admin.employee.dto.EmployeeGenericResponse
+import org.logiclettuce.depman.api.department.dto.DepartmentGenericResponse
+import org.logiclettuce.depman.api.employee.dto.EmployeeGenericResponse
 import org.logiclettuce.depman.common.domain.department.Department
 import org.logiclettuce.depman.common.domain.department.DepartmentDao
 import org.logiclettuce.depman.common.domain.department.DepartmentRepository

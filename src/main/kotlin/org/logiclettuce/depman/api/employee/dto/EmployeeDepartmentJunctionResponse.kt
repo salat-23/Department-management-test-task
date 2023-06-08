@@ -1,6 +1,6 @@
-package org.logiclettuce.depman.api.admin.employee.dto
+package org.logiclettuce.depman.api.employee.dto
 
-import org.logiclettuce.depman.api.admin.department.dto.DepartmentGenericResponse
+import org.logiclettuce.depman.api.department.dto.DepartmentGenericResponse
 import org.logiclettuce.depman.common.domain.userdepartmentjunction.CurrencyType
 import org.logiclettuce.depman.common.domain.userdepartmentjunction.EmployeeDepartmentJunction
 

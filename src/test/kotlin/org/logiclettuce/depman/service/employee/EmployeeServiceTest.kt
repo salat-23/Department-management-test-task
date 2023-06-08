@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.extension.ExtendWith
-import org.logiclettuce.depman.api.admin.employee.dto.CreateEmployeeDepartmentJunction
-import org.logiclettuce.depman.api.admin.employee.dto.CreateEmployeeRequest
-import org.logiclettuce.depman.api.admin.employee.dto.PayPropRequest
+import org.logiclettuce.depman.api.employee.dto.CreateEmployeeDepartmentJunction
+import org.logiclettuce.depman.api.employee.dto.CreateEmployeeRequest
+import org.logiclettuce.depman.api.employee.dto.PayPropRequest
 import org.logiclettuce.depman.common.domain.department.Department
 import org.logiclettuce.depman.common.domain.employee.Employee
 import org.logiclettuce.depman.common.domain.employee.EmployeeDao

@@ -1,20 +1,21 @@
-package org.logiclettuce.depman.api.admin.employee
+package org.logiclettuce.depman.api.employee
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.logiclettuce.depman.api.admin.employee.dto.CreateEmployeeRequest
-import org.logiclettuce.depman.api.admin.employee.dto.EditEmployeeRequest
-import org.logiclettuce.depman.api.admin.employee.dto.EmployeeGenericResponse
-import org.logiclettuce.depman.api.admin.employee.dto.EmployeeHeadResponse
+import org.logiclettuce.depman.api.employee.dto.CreateEmployeeRequest
+import org.logiclettuce.depman.api.employee.dto.EditEmployeeRequest
+import org.logiclettuce.depman.api.employee.dto.EmployeeGenericResponse
+import org.logiclettuce.depman.api.employee.dto.EmployeeHeadResponse
 import org.logiclettuce.depman.common.domain.employee.data.EmployeeResultForHead
 import org.logiclettuce.depman.error.dto.ApiError
 import org.logiclettuce.depman.service.employee.EmployeeService
 import org.logiclettuce.depman.util.AnyResponseEntity
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -46,6 +47,7 @@ class EmployeeController(
         )
     )
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     fun createEmployeesForDepartment(
         @RequestBody createEmployeeRequest: CreateEmployeeRequest
     ): AnyResponseEntity {
@@ -80,6 +82,7 @@ class EmployeeController(
         )
     )
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'HEAD')")
     fun editEmployee(@PathVariable id: Long, @RequestBody editEmployeeRequest: EditEmployeeRequest): AnyResponseEntity {
         return try {
             // todo remove list make just employee generic response
@@ -103,6 +106,7 @@ class EmployeeController(
         )
     )
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE', 'HEAD')")
     fun getAll(): AnyResponseEntity {
         return ResponseEntity.ok(employeeService.getAllEmployees())
     }

@@ -1,12 +1,12 @@
-package org.logiclettuce.depman.api.admin.account
+package org.logiclettuce.depman.api.account
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.logiclettuce.depman.api.admin.account.dto.CreateAccountRequest
-import org.logiclettuce.depman.api.admin.account.dto.EditAccountRequest
+import org.logiclettuce.depman.api.account.dto.CreateAccountRequest
+import org.logiclettuce.depman.api.account.dto.EditAccountRequest
 import org.logiclettuce.depman.api.common.dto.UserGenericResponse
 import org.logiclettuce.depman.api.user.auth.dto.TokenResponse
 import org.logiclettuce.depman.error.dto.ApiError
@@ -15,6 +15,7 @@ import org.logiclettuce.depman.util.AnyResponseEntity
 import org.logiclettuce.depman.util.loggerDelegate
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -26,6 +27,7 @@ import javax.persistence.EntityNotFoundException
 
 @RestController
 @RequestMapping("/api/admin/account")
+@PreAuthorize("hasAnyRole('ADMIN')")
 class AccountController(
     private val userService: UserService
 ) {

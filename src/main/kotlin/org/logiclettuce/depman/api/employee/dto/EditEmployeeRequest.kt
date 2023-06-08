@@ -1,4 +1,4 @@
-package org.logiclettuce.depman.api.admin.employee.dto
+package org.logiclettuce.depman.api.employee.dto
 
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
