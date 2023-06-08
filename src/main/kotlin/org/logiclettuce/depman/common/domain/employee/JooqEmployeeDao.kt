@@ -25,10 +25,11 @@ class JooqEmployeeDao(
                     multisetAgg(PAY_PROPS.ID, PAY_PROPS.VALUE, PAY_PROPS.TYPE).`as`("pay_props")
                 )
                 .from(EMPLOYEES)
+                .join(USERS).on(USERS.ID.eq(EMPLOYEES.USER_ID))
                 .join(EMPLOYEE_DEPARTMENT_JUNCTIONS).on(EMPLOYEE_DEPARTMENT_JUNCTIONS.EMPLOYEE_ID.eq(EMPLOYEES.ID))
                 .join(DEPARTMENTS).on(DEPARTMENTS.ID.eq(EMPLOYEE_DEPARTMENT_JUNCTIONS.DEPARTMENT_ID))
                 .join(PAY_PROPS).on(PAY_PROPS.EMPLOYEE_DEPARTMENT_JUNCTION_ID.eq(EMPLOYEE_DEPARTMENT_JUNCTIONS.ID))
-                .where(DEPARTMENTS.ID.eq(departmentId))
+                .where(DEPARTMENTS.ID.eq(departmentId).and(USERS.ACTIVE.eq(true)))
                 .groupBy(EMPLOYEES.ID, EMPLOYEES.FULL_NAME)
                 .fetch()
 
@@ -52,8 +53,10 @@ class JooqEmployeeDao(
                     multisetAgg(DEPARTMENTS.ID, DEPARTMENTS.NAME, DEPARTMENTS.CODE).`as`("departments")
                 )
                 .from(EMPLOYEES)
+                .join(USERS).on(USERS.ID.eq(EMPLOYEES.USER_ID))
                 .join(EMPLOYEE_DEPARTMENT_JUNCTIONS).on(EMPLOYEE_DEPARTMENT_JUNCTIONS.EMPLOYEE_ID.eq(EMPLOYEES.ID))
                 .join(DEPARTMENTS).on(DEPARTMENTS.ID.eq(EMPLOYEE_DEPARTMENT_JUNCTIONS.DEPARTMENT_ID))
+                .where(USERS.ACTIVE.eq(true))
                 .groupBy(EMPLOYEES.ID, EMPLOYEES.FULL_NAME)
                 .fetch()
 

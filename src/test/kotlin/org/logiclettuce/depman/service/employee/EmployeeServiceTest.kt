@@ -17,6 +17,7 @@ import org.logiclettuce.depman.common.domain.user.User
 import org.logiclettuce.depman.common.domain.user.UserRepository
 import org.logiclettuce.depman.common.domain.userdepartmentjunction.CurrencyType
 import org.logiclettuce.depman.common.domain.userdepartmentjunction.EmployeeDepartmentJunctionRepository
+import org.logiclettuce.depman.security.configuration.UserRole
 import org.logiclettuce.depman.service.department.DepartmentService
 import org.logiclettuce.depman.service.user.UserService
 import org.mockito.ArgumentMatchers.any

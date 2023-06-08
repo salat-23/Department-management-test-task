@@ -44,7 +44,7 @@ class EmployeeService(
         val authorities = authentication.authorities.map { it.authority }
 
         if (User.hasRole(authorities, UserRole.ADMIN))
-            return employeeRepository.findAll().map { EmployeeGenericResponse(it) }
+            return employeeRepository.findAllByUserActive(true).map { EmployeeGenericResponse(it) }
 
         if (User.hasRole(authorities, UserRole.HEAD)) {
             val headUserDepartment = departmentService.findDepartmentByHead(user)
@@ -75,6 +75,7 @@ class EmployeeService(
         val userId = createEmployeeRequest.userId
         val user = userService.findUserById(userId)
             .orElseThrow { EntityNotFoundException("User with id: $userId was not found") }
+        if (!user.active) throw IllegalArgumentException("Cannot use deactivated user")
 
         if (employeeRepository.existsByUser(user)) throw EntityExistsException("Employee with user id: ${user.id} already exists")
 
@@ -148,7 +149,9 @@ class EmployeeService(
         val existingEmployee = employeeRepository.findById(id)
             .orElseThrow { EntityNotFoundException("Employee with id: $id was not found") }
 
-        userService.makeEmployee(existingEmployee.user)
+
+        val existingEmployeeUser = existingEmployee.user
+        userService.makeEmployee(existingEmployeeUser)
 
         if (headRequestContainsInaccessibleDepartmentJunctions(headUserDepartment, editEmployeeRequest))
             throw IllegalArgumentException("Cannot edit departments where you are not a head")

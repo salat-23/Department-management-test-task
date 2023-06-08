@@ -9,4 +9,6 @@ interface EmployeeRepository: JpaRepository<Employee, Long> {
 
     fun existsByUser(user: User): Boolean
 
+    fun findAllByUserActive(userActive: Boolean): List<Employee>
+
 }

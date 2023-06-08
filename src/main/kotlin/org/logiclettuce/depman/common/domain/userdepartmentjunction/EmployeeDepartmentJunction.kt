@@ -27,5 +27,26 @@ class EmployeeDepartmentJunction(
 
     @OneToMany(mappedBy = "junction")
     var payProps: MutableList<PayProp> = mutableListOf()
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is EmployeeDepartmentJunction) return false
+
+        if (wageRate != other.wageRate) return false
+        if (currency != other.currency) return false
+        if (id != other.id) return false
+        if (employee != other.employee) return false
+        if (department != other.department) return false
+        return payProps == other.payProps
+    }
+
+    override fun hashCode(): Int {
+        var result = wageRate.hashCode()
+        result = 31 * result + currency.hashCode()
+        result = 31 * result + (id?.hashCode() ?: 0)
+        result = 31 * result + employee.hashCode()
+        result = 31 * result + department.hashCode()
+        result = 31 * result + payProps.hashCode()
+        return result
+    }
 
 }

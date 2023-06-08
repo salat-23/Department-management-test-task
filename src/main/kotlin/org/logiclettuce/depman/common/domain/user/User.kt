@@ -54,4 +54,27 @@ class User(
     }
 
     infix fun createRole(userRole: UserRole): Role = Role(Role.UserRoleId(this.id, userRole))
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is User) return false
+
+        if (login != other.login) return false
+        if (email != other.email) return false
+        if (password != other.password) return false
+        if (active != other.active) return false
+        if (id != other.id) return false
+        if (roleList != other.roleList) return false
+        return roles == other.roles
+    }
+
+    override fun hashCode(): Int {
+        var result = login.hashCode()
+        result = 31 * result + email.hashCode()
+        result = 31 * result + password.hashCode()
+        result = 31 * result + active.hashCode()
+        result = 31 * result + (id?.hashCode() ?: 0)
+        result = 31 * result + roleList.hashCode()
+        result = 31 * result + roles.hashCode()
+        return result
+    }
 }

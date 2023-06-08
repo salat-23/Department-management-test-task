@@ -18,4 +18,21 @@ class PayProp(
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "employee_department_junction_id", nullable = false)
     lateinit var junction: EmployeeDepartmentJunction
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is PayProp) return false
+
+        if (method != other.method) return false
+        if (value != other.value) return false
+        if (id != other.id) return false
+        return junction == other.junction
+    }
+
+    override fun hashCode(): Int {
+        var result = method.hashCode()
+        result = 31 * result + value.hashCode()
+        result = 31 * result + (id?.hashCode() ?: 0)
+        result = 31 * result + junction.hashCode()
+        return result
+    }
 }
