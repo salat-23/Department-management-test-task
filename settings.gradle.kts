@@ -1,4 +1,4 @@
-rootProject.name = "template"
+rootProject.name = "depman"
 
 pluginManagement {
     val kotlinVersion: String by settings

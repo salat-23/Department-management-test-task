@@ -9,13 +9,15 @@ plugins {
     id("io.spring.dependency-management")
     kotlin("jvm")
     kotlin("plugin.spring")
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.5.21"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.5.21"
     id("org.flywaydb.flyway") version "9.8.1"
     id("nu.studer.jooq") version "7.0"
 }
 
 group = "org.logiclettuce"
 version = "0.1.0"
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 
 configurations {
@@ -42,6 +44,7 @@ val pgPassword: String by project
 dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -51,6 +54,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.flywaydb:flyway-core")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -62,13 +66,9 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jjwtVersion")
     // endregion jwt
     // region Jooq
-
-
     jooqGenerator("org.postgresql:postgresql:42.5.4")
     jooqGenerator("jakarta.xml.bind:jakarta.xml.bind-api:4.0.0")
-
     // endregion
-
     // spring doc
     implementation("org.springdoc:springdoc-openapi-ui:$springDocVersion")
     implementation("org.springdoc:springdoc-openapi-data-rest:$springDocVersion")
@@ -82,6 +82,8 @@ tasks.withType<KotlinCompile> {
     }
 }
 
+
+
 tasks.jar {
     enabled = true
     // Remove `plain` postfix from jar file name
@@ -94,12 +96,18 @@ tasks.withType<Test> {
 
 // region Flyway setup
 
+allOpen {
+    annotations("javax.persistence.Entity", "javax.persistence.MappedSuperclass", "javax.persistence.Embedabble")
+}
+
 flyway {
     url = pgConnectionString
     user = pgUser
     password = pgPassword
     schemas = arrayOf("public")
     locations = arrayOf("filesystem:${project.projectDir}/src/main/resources/db/migration")
+    cleanDisabled = false
+
 }
 
 // endregion
@@ -155,8 +163,8 @@ jooq {
                         isFluentSetters = true
                     }
                     target.apply {
-                        packageName = "${group}.database"
-                        directory = "build/generated-src/jooq/main"  // default (can be omitted)
+                        packageName = "${group}.${project.name}.database"
+                        directory = "src/main/java/"  // default (can be omitted)
                     }
                     strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
                 }
