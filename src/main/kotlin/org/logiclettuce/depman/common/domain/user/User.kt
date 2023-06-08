@@ -22,6 +22,12 @@ class User(
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
     var roles: MutableList<Role> = mutableListOf()
 
+    companion object {
+        fun hasRole(userRoles: List<String>, role: UserRole): Boolean {
+            return userRoles.contains(UserRole.getRoleIdentifier(role))
+        }
+    }
+
     fun addRole(role: Role) {
         roles.add(role)
         role.user = this

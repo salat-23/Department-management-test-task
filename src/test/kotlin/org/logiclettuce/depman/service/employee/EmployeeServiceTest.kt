@@ -9,10 +9,12 @@ import org.logiclettuce.depman.api.admin.employee.dto.CreateEmployeeRequest
 import org.logiclettuce.depman.api.admin.employee.dto.PayPropRequest
 import org.logiclettuce.depman.common.domain.department.Department
 import org.logiclettuce.depman.common.domain.employee.Employee
+import org.logiclettuce.depman.common.domain.employee.EmployeeDao
 import org.logiclettuce.depman.common.domain.employee.EmployeeRepository
 import org.logiclettuce.depman.common.domain.payprop.PayMethod
 import org.logiclettuce.depman.common.domain.payprop.PayPropRepository
 import org.logiclettuce.depman.common.domain.user.User
+import org.logiclettuce.depman.common.domain.user.UserRepository
 import org.logiclettuce.depman.common.domain.userdepartmentjunction.CurrencyType
 import org.logiclettuce.depman.common.domain.userdepartmentjunction.EmployeeDepartmentJunctionRepository
 import org.logiclettuce.depman.service.department.DepartmentService
@@ -32,6 +34,9 @@ class EmployeeServiceTest {
     private lateinit var userService: UserService
 
     @Mock
+    private lateinit var userRepository: UserRepository
+
+    @Mock
     lateinit var departmentService: DepartmentService
 
     @Mock
@@ -39,6 +44,9 @@ class EmployeeServiceTest {
 
     @Mock
     lateinit var employeeRepository: EmployeeRepository
+
+    @Mock
+    lateinit var employeeDao: EmployeeDao
 
     @Mock
     lateinit var payPropRepository: PayPropRepository
@@ -50,7 +58,9 @@ class EmployeeServiceTest {
             departmentService,
             employeeDepartmentJunctionRepository,
             employeeRepository,
-            payPropRepository
+            employeeDao,
+            payPropRepository,
+            userRepository
         )
 
         val userId = 1L

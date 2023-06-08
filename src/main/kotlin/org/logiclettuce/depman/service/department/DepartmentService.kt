@@ -1,14 +1,18 @@
 package org.logiclettuce.depman.service.department
 
+import org.logiclettuce.depman.api.admin.department.dto.DepartmentGenericResponse
+import org.logiclettuce.depman.api.admin.employee.dto.EmployeeGenericResponse
 import org.logiclettuce.depman.common.domain.department.Department
 import org.logiclettuce.depman.common.domain.department.DepartmentDao
 import org.logiclettuce.depman.common.domain.department.DepartmentRepository
 import org.logiclettuce.depman.common.domain.user.User
 import org.logiclettuce.depman.configuration.CacheConfiguration
 import org.logiclettuce.depman.error.exception.EntityNotFoundException
+import org.logiclettuce.depman.security.configuration.UserRole
 import org.logiclettuce.depman.service.user.UserService
 import org.springframework.cache.annotation.CachePut
 import org.springframework.cache.annotation.Cacheable
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import java.util.Optional
 import javax.transaction.Transactional
@@ -78,8 +82,15 @@ class DepartmentService(
         return departmentRepository.save(existingDepartment)
     }
 
-    fun getAll(): List<Department> {
-        return departmentRepository.findAll()
+    fun getAll(): List<Any> {
+        val authentication = SecurityContextHolder.getContext().authentication
+
+        val authorities = authentication.authorities.map { it.authority }
+
+        if (User.hasRole(authorities, UserRole.EMPLOYEE))
+            return departmentDao.findAllForEmployee()
+
+        return departmentRepository.findAll().map { d -> DepartmentGenericResponse(d) }
     }
 
 }

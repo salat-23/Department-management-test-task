@@ -31,6 +31,8 @@ class EmployeeService(
     protected val payPropRepository: PayPropRepository,
     protected val userRepository: UserRepository
 ) {
+    // SOLID seem like non-existent thing here, if there will be spare time - need to refactor everything into separate services
+
 
     fun getAllEmployees(): List<Any> {
         val authentication = SecurityContextHolder.getContext().authentication
@@ -39,15 +41,19 @@ class EmployeeService(
         val user = userService.findUserByLogin(authentication.name)
             .orElseThrow { EntityNotFoundException("Could not retrieve authenticated user") }
 
-        if (hasRole(authentication.authorities.map { it.authority }, UserRole.ADMIN))
+        val authorities = authentication.authorities.map { it.authority }
+
+        if (User.hasRole(authorities, UserRole.ADMIN))
             return employeeRepository.findAll().map { EmployeeGenericResponse(it) }
 
-        val headUserDepartment = departmentService.findDepartmentByHead(user)
-            .orElseThrow { EntityNotFoundException("Could not retrieve head user department") }
+        if (User.hasRole(authorities, UserRole.HEAD)) {
+            val headUserDepartment = departmentService.findDepartmentByHead(user)
+                .orElseThrow { EntityNotFoundException("Could not retrieve head user department") }
+            val depId = headUserDepartment.id!!
+            return employeeDao.findAllByDepartmentIdForHead(depId)
+        }
 
-        val depId = headUserDepartment.id!!
-
-        return employeeDao.findAllByDepartmentIdForHead(depId)
+        return employeeDao.findAllForEmployee()
     }
 
     private fun countSameIdMap(departments: List<CreateEmployeeDepartmentJunction>): Map<Long, Int> {
@@ -79,13 +85,12 @@ class EmployeeService(
             throw IllegalArgumentException("Employee cannot be added to department with id: ${it.value} ${it.key} times")
         }
 
-        var employee = Employee(createEmployeeRequest.fullName)
+        val employee = Employee(createEmployeeRequest.fullName)
         employee.user = user
 
-        employee = employeeRepository.save(employee)
+        userService.makeEmployee(employee.user)
 
-        giveUserEmployeeRoleIfNeeded(user)
-
+        val employeeJunctions = mutableListOf<EmployeeDepartmentJunction>()
         for (employeeDepartmentJunctionRequest in createEmployeeRequest.departments) {
             val departmentId = employeeDepartmentJunctionRequest.departmentId
             val department = departmentService.findDepartmentById(departmentId)
@@ -104,22 +109,12 @@ class EmployeeService(
                 payProp.junction = employeeDepartmentJunction
                 payPropsToSave += payProp
             }
-            employeeDepartmentJunctionRepository.save(employeeDepartmentJunction)
+            employeeJunctions += employeeDepartmentJunctionRepository.save(employeeDepartmentJunction)
             payPropRepository.saveAll(payPropsToSave)
         }
+        employee.junctions = employeeJunctions
 
         return employeeRepository.save(employee)
-    }
-
-    private fun giveUserEmployeeRoleIfNeeded(user: User) {
-        if (userService.isEmployee(user) && !user.roles.any { it.id?.role == UserRole.EMPLOYEE }) {
-            user.addRole(UserRole.EMPLOYEE)
-            userRepository.save(user)
-        }
-    }
-
-    private fun hasRole(userRoles: List<String>, role: UserRole): Boolean {
-        return userRoles.contains(UserRole.getRoleIdentifier(role))
     }
 
     @Transactional
@@ -127,8 +122,8 @@ class EmployeeService(
         val userRoles = SecurityContextHolder.getContext().authentication.authorities.map { it.authority }
 
         return when {
-            hasRole(userRoles, UserRole.ADMIN) -> EmployeeGenericResponse(editEmployee(id, editEmployeeRequest))
-            hasRole(userRoles, UserRole.HEAD) -> editEmployeeAsHead(id, editEmployeeRequest)
+            User.hasRole(userRoles, UserRole.ADMIN) -> EmployeeGenericResponse(editEmployee(id, editEmployeeRequest))
+            User.hasRole(userRoles, UserRole.HEAD) -> editEmployeeAsHead(id, editEmployeeRequest)
             else -> throw AccessDeniedException("User does not have enough permissions. User's roles: $userRoles")
         }
     }
@@ -137,7 +132,7 @@ class EmployeeService(
         validDepartment: Department,
         editEmployeeRequest: EditEmployeeRequest
     ): Boolean {
-        return !editEmployeeRequest.junctions.any { it.departmentId != validDepartment.id }
+        return editEmployeeRequest.junctions.any { it.departmentId != validDepartment.id }
     }
 
     @Transactional
@@ -152,6 +147,8 @@ class EmployeeService(
 
         val existingEmployee = employeeRepository.findById(id)
             .orElseThrow { EntityNotFoundException("Employee with id: $id was not found") }
+
+        userService.makeEmployee(existingEmployee.user)
 
         if (headRequestContainsInaccessibleDepartmentJunctions(headUserDepartment, editEmployeeRequest))
             throw IllegalArgumentException("Cannot edit departments where you are not a head")
@@ -203,7 +200,7 @@ class EmployeeService(
             val user = userService.findUserById(userId)
                 .orElseThrow { EntityNotFoundException("User with id: $userId was not found") }
             employee.user = user
-            giveUserEmployeeRoleIfNeeded(user)
+            userService.makeEmployee(employee.user)
         }
 
         val countIdMap = countSameIdMap(editEmployeeRequest.junctions)

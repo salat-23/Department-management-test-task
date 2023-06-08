@@ -120,7 +120,8 @@ class DepartmentController(
         )
     )
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
     fun getDepartments(): AnyResponseEntity {
-        return ResponseEntity.ok(departmentService.getAll().map { d -> DepartmentGenericResponse(d) })
+        return ResponseEntity.ok(departmentService.getAll())
     }
 }
