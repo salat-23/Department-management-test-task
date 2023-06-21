@@ -12,9 +12,9 @@ import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.Optional
-import javax.persistence.EntityExistsException
-import javax.persistence.EntityNotFoundException
-import javax.transaction.Transactional
+import jakarta.persistence.EntityExistsException
+import jakarta.persistence.EntityNotFoundException
+import jakarta.transaction.Transactional
 
 @Service
 class UserService(

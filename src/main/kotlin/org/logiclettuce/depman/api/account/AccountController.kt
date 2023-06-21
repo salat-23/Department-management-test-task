@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import javax.persistence.EntityExistsException
-import javax.persistence.EntityNotFoundException
+import jakarta.persistence.EntityExistsException
+import jakarta.persistence.EntityNotFoundException
 
 @RestController
 @RequestMapping("/api/admin/account")

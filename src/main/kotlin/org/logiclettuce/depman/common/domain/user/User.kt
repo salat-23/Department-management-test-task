@@ -2,7 +2,7 @@ package org.logiclettuce.depman.common.domain.user
 
 import org.logiclettuce.depman.common.domain.role.Role
 import org.logiclettuce.depman.security.configuration.UserRole
-import javax.persistence.*
+import jakarta.persistence.*
 import kotlin.jvm.Transient
 
 @Entity

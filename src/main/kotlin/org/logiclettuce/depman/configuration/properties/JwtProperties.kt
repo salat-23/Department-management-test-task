@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 import java.util.*
-import javax.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotBlank
 
 
 @ConfigurationProperties(prefix = "app.jwt.token.access")

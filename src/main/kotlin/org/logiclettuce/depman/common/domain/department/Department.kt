@@ -2,7 +2,7 @@ package org.logiclettuce.depman.common.domain.department
 
 import org.logiclettuce.depman.common.domain.user.User
 import org.logiclettuce.depman.common.domain.userdepartmentjunction.EmployeeDepartmentJunction
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "departments")

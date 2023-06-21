@@ -17,9 +17,9 @@ import org.logiclettuce.depman.service.user.UserService
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
-import javax.persistence.EntityExistsException
-import javax.persistence.EntityNotFoundException
-import javax.transaction.Transactional
+import jakarta.persistence.EntityExistsException
+import jakarta.persistence.EntityNotFoundException
+import jakarta.transaction.Transactional
 
 @Service
 class EmployeeService(

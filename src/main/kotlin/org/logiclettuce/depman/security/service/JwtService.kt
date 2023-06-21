@@ -7,7 +7,7 @@ import org.logiclettuce.depman.configuration.properties.Base64Secret
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.*
-import javax.crypto.SecretKey
+import jakarta.crypto.SecretKey
 
 interface JwtService {
     fun generateToken(userDetails: UserDetails): String

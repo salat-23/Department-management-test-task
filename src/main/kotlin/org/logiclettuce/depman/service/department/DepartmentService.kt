@@ -15,7 +15,7 @@ import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import java.util.Optional
-import javax.transaction.Transactional
+import jakarta.transaction.Transactional
 
 @Service
 class DepartmentService(

@@ -5,12 +5,12 @@ import org.jooq.meta.jaxb.Property
 import org.jooq.meta.jaxb.Logging
 
 plugins {
-    id("org.springframework.boot")
+    id("org.springframework.boot") version "3.0.0"
     id("io.spring.dependency-management")
     kotlin("jvm")
     kotlin("plugin.spring")
-    id("org.jetbrains.kotlin.plugin.jpa") version "1.5.21"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.5.21"
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.8.0"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.8.0"
     id("org.flywaydb.flyway") version "9.8.1"
     id("nu.studer.jooq") version "7.0"
 }

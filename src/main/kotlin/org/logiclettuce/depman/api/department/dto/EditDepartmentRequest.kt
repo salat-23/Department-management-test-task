@@ -1,7 +1,7 @@
 package org.logiclettuce.depman.api.department.dto
 
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 
 data class EditDepartmentRequest(
     @NotBlank val name: String,

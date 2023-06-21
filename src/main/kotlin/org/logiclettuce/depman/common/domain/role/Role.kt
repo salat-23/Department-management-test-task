@@ -3,7 +3,7 @@ package org.logiclettuce.depman.common.domain.role
 import org.logiclettuce.depman.common.domain.user.User
 import org.logiclettuce.depman.security.configuration.UserRole
 import java.io.Serializable
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "users_roles")

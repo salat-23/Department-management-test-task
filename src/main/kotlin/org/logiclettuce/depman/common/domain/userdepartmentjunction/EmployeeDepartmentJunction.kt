@@ -3,7 +3,7 @@ package org.logiclettuce.depman.common.domain.userdepartmentjunction
 import org.logiclettuce.depman.common.domain.department.Department
 import org.logiclettuce.depman.common.domain.employee.Employee
 import org.logiclettuce.depman.common.domain.payprop.PayProp
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "employee_department_junctions")

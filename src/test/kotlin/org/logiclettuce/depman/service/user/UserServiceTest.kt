@@ -12,7 +12,7 @@ import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.*
-import javax.persistence.EntityExistsException
+import jakarta.persistence.EntityExistsException
 
 @ExtendWith(MockitoExtension::class)
 class UserServiceTest {

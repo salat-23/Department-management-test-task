@@ -3,7 +3,7 @@ package org.logiclettuce.depman.util.extensions
 import org.springframework.security.config.web.servlet.CorsDsl
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 
 inline fun CorsDsl.configurationSource(crossinline block: (HttpServletRequest) -> CorsConfiguration?) {
     this.configurationSource = CorsConfigurationSource {
